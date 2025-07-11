@@ -1,67 +1,21 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Expense Tracker 💸</title>
-  <link rel="stylesheet" href="style.css">
+  <link href="style.css" rel="stylesheet"/>
 </head>
 <body>
   <div class="container">
     <h1>Expense Tracker 💸</h1>
-
-    <form>
-      <input type="text" placeholder="Description" />
-      <input type="number" placeholder="Amount" />
-      <input type="date" />
-      <button type="button">Add Expense</button>
+    <form id="expense-form">
+      <input type="text" id="description" placeholder="Description" required />
+      <input type="number" id="amount" placeholder="Amount" required />
+      <input type="date" id="date" required />
+      <button type="submit">Add Expense</button>
     </form>
-
-    <h2>Total: ₹150.00</h2>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Expense Tracker 💸</title>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
-    <div class="container">
-        <h1>Expense Tracker 💸</h1>
-
-        <form method="POST" action="/add">
-            <input type="text" name="description" placeholder="Description" required>
-            <input type="number" name="amount" step="0.01" placeholder="Amount" required>
-            <input type="date" name="date" required>
-            <button type="submit">Add Expense</button>
-        </form>
-
-        <h2>Total: ₹{{ total }}</h2>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Description</th>
-                    <th>Amount (₹)</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for expense in expenses %}
-                <tr>
-                    <td>{{ expense[3] }}</td>
-                    <td>{{ expense[1] }}</td>
-                    <td>₹{{ '{:.2f}'.format(expense[2]) }}</td>
-                    <td><a href="/delete/{{ expense[0] }}" title="Delete">❌</a></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</body>
-</html>
-
+    <h2>Total: ₹<span id="total">0.00</span></h2>
     <table>
       <thead>
         <tr>
@@ -71,21 +25,52 @@
           <th>Action</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td>2025-07-24</td>
-          <td>travelling</td>
-          <td>₹50.00</td>
-          <td><a href="#">❌</a></td>
-        </tr>
-        <tr>
-          <td>2025-07-09</td>
-          <td>Food</td>
-          <td>₹100.00</td>
-          <td><a href="#">❌</a></td>
-        </tr>
+      <tbody id="expense-list">
+        <!-- Entries will show here -->
       </tbody>
     </table>
   </div>
+  <script>
+    let expenses = [];
+
+    const form = document.getElementById('expense-form');
+    const totalDisplay = document.getElementById('total');
+    const list = document.getElementById('expense-list');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const desc = document.getElementById('description').value;
+      const amount = parseFloat(document.getElementById('amount').value);
+      const date = document.getElementById('date').value;
+      
+      if (desc && amount && date) {
+        expenses.push({ desc, amount, date });
+        expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
+        renderExpenses();
+        form.reset();
+      }
+    });
+
+    function renderExpenses() {
+      list.innerHTML = '';
+      let total = 0;
+      expenses.forEach((expense, index) => {
+        total += expense.amount;
+        list.innerHTML += `
+          <tr>
+            <td>${expense.date}</td>
+            <td>${expense.desc}</td>
+            <td>₹${expense.amount.toFixed(2)}</td>
+            <td><a href="#" onclick="deleteExpense(${index})">❌</a></td>
+          </tr>`;
+      });
+      totalDisplay.textContent = total.toFixed(2);
+    }
+
+    function deleteExpense(index) {
+      expenses.splice(index, 1);
+      renderExpenses();
+    }
+  </script>
 </body>
 </html>
