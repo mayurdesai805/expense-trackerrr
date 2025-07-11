@@ -18,6 +18,49 @@
     </form>
 
     <h2>Total: ₹150.00</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Expense Tracker 💸</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Expense Tracker 💸</h1>
+
+        <form method="POST" action="/add">
+            <input type="text" name="description" placeholder="Description" required>
+            <input type="number" name="amount" step="0.01" placeholder="Amount" required>
+            <input type="date" name="date" required>
+            <button type="submit">Add Expense</button>
+        </form>
+
+        <h2>Total: ₹{{ total }}</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Amount (₹)</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for expense in expenses %}
+                <tr>
+                    <td>{{ expense[3] }}</td>
+                    <td>{{ expense[1] }}</td>
+                    <td>₹{{ '{:.2f}'.format(expense[2]) }}</td>
+                    <td><a href="/delete/{{ expense[0] }}" title="Delete">❌</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
 
     <table>
       <thead>
@@ -31,7 +74,7 @@
       <tbody>
         <tr>
           <td>2025-07-24</td>
-          <td>Food</td>
+          <td>travelling</td>
           <td>₹50.00</td>
           <td><a href="#">❌</a></td>
         </tr>
