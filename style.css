@@ -1,0 +1,120 @@
+/* Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Body Styling */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to right, #c9d6ff, #e2e2e2);
+    padding: 40px 10px;
+}
+
+/* Container Styling */
+.container {
+    max-width: 750px;
+    margin: auto;
+    background: white;
+    padding: 40px 50px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Headings */
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    text-align: center;
+    color: #444;
+    margin-top: 20px;
+    font-weight: normal;
+}
+
+/* Form Styling */
+form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+form input, form button {
+    padding: 12px 15px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    transition: 0.3s;
+}
+
+form input {
+    width: 28%;
+    min-width: 130px;
+}
+
+form input:focus {
+    border-color: #4a90e2;
+    outline: none;
+    background: #f3faff;
+}
+
+form button {
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+form button:hover {
+    background-color: #357ab8;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+    font-size: 16px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+thead {
+    background-color: #4a90e2;
+    color: white;
+}
+
+th, td {
+    padding: 14px 18px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    transition: background 0.3s ease-in-out;
+}
+
+/* Row hover without flicker */
+tbody tr:hover {
+    background-color: #f0f8ff;
+}
+
+/* Action (Delete) */
+a {
+    color: #e74c3c;
+    font-size: 20px;
+    text-decoration: none;
+    transition: transform 0.2s ease-in-out, color 0.2s;
+}
+
+a:hover {
+    color: #c0392b;
+    transform: scale(1.2);
+}
