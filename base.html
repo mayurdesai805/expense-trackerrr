@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Expense Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  
+</head>
+<body>
+  <header class="header">
+    <div class="container header-content">
+      <h1 class="logo">Expense <span>Tracker</span></h1>
+      <p class="tagline">Simple personal finance tracker built with Flask</p>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="container">
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>© {{ 2025 }} Expense Tracker · Built with Python (Flask), HTML & CSS</p>
+  </footer>
+</body>
+</html>
