@@ -1,64 +1,624 @@
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to right, #dbeafe, #e0e7ff);
+/* ===========================
+   EXPENSE TRACKER – ADVANCED UI
+   =========================== */
+
+/* ---------- ROOT VARIABLES ---------- */
+:root {
+  --bg-main: #050816;
+  --bg-alt: #0d1024;
+  --bg-card: #12162e;
+  --bg-card-soft: #181d3a;
+  --primary: #2ed573;
+  --primary-soft: rgba(46, 213, 115, 0.15);
+  --primary-dark: #1cb563;
+  --danger: #ff4757;
+  --danger-soft: rgba(255, 71, 87, 0.12);
+  --text-main: #ffffff;
+  --text-muted: #c4c7db;
+  --border-soft: #262b4a;
+  --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.45);
+  --radius-lg: 16px;
+  --radius-md: 10px;
+  --radius-pill: 999px;
+  --transition-fast: 0.18s ease-in-out;
+  --transition-normal: 0.25s ease;
+  --font-main: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ---------- RESET ---------- */
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
+
+/* ---------- BASE HTML ---------- */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-main);
+  background: radial-gradient(circle at top, #20264a 0, var(--bg-main) 50%, #01030a 100%);
+  color: var(--text-main);
+  min-height: 100vh;
+}
+
+/* ---------- UTILITIES ---------- */
 .container {
-  max-width: 700px;
-  margin: 40px auto;
-  background: #fff;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  width: min(1120px, 92%);
+  margin: 0 auto;
 }
-h1 {
+
+.main {
+  padding: 2.2rem 0 3rem;
+}
+
+/* Text utilities */
+.text-muted {
+  color: var(--text-muted);
+}
+
+.text-center {
   text-align: center;
-  color: #1e3a8a;
 }
-form {
+
+/* Spacing utilities */
+.mt-1 {
+  margin-top: 0.25rem;
+}
+.mt-2 {
+  margin-top: 0.5rem;
+}
+.mt-3 {
+  margin-top: 0.75rem;
+}
+.mt-4 {
+  margin-top: 1rem;
+}
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+.mb-3 {
+  margin-bottom: 0.75rem;
+}
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+/* ---------- HEADER ---------- */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(18px);
+  background: linear-gradient(
+    to bottom,
+    rgba(5, 8, 22, 0.95),
+    rgba(5, 8, 22, 0.8),
+    transparent
+  );
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.header-content {
   display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  gap: 0.75rem;
+}
+
+/* Logo styling */
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.logo::before {
+  content: "₹";
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-pill);
+  background: radial-gradient(circle at top, var(--primary), #7effbf);
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
+  font-size: 0.95rem;
+  color: #051015;
 }
-form input, form button {
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #d1d5db;
-  border-radius: 5px;
+
+.logo span {
+  color: var(--primary);
 }
-form button {
-  background-color: #3b82f6;
-  color: white;
+
+.tagline {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* ---------- LAYOUT: MAIN AREA ---------- */
+.layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.4rem;
+  align-items: flex-start;
+}
+
+/* Left panel (form), right panel (summary + list) */
+.form-card {
+  flex: 1 1 280px;
+}
+
+.right-panel {
+  flex: 1.4 1 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ---------- CARD COMPONENT ---------- */
+.card {
+  background: radial-gradient(circle at top left, #22274a 0, var(--bg-card) 50%);
+  padding: 1.4rem 1.5rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-soft);
+  position: relative;
+  overflow: hidden;
+}
+
+/* subtle gradient glow at top of card */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom right,
+    rgba(46, 213, 115, 0.12),
+    transparent 50%,
+    rgba(255, 255, 255, 0.02)
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-normal);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card h2 {
+  font-size: 1.15rem;
+  margin-bottom: 0.2rem;
+}
+
+.small-text {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.3rem;
+}
+
+/* ---------- FORM STYLING ---------- */
+.expense-form {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem 0.9rem;
+}
+
+/* Make title and amount be full-width on small screens? We'll keep them in grid for now */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.form-group label {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+/* input, select shared styles */
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.6rem 0.7rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(135deg, #050816, #11152b);
+  color: var(--text-main);
+  font-size: 0.84rem;
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast),
+    transform var(--transition-fast), background var(--transition-fast);
+}
+
+/* placeholder styling */
+.form-group input::placeholder {
+  color: rgba(196, 199, 219, 0.7);
+}
+
+/* focus and hover */
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 1px rgba(46, 213, 115, 0.6), 0 10px 25px rgba(0, 0, 0, 0.65);
+  transform: translateY(-1px);
+  background: linear-gradient(135deg, #050816, #161c36);
+}
+
+/* Date field full width on large screens is okay but we will keep grid layout;
+   On mobile, grid will be 1 column. */
+#title {
+  grid-column: 1 / -1;
+}
+#amount {
+  grid-column: 1 / -1;
+}
+
+/* ---------- BUTTONS ---------- */
+.btn {
+  display: inline-block;
+  padding: 0.65rem 1.1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.86rem;
+  font-weight: 600;
   border: none;
   cursor: pointer;
-}
-form button:hover {
-  background-color: #2563eb;
-}
-h2 {
-  text-align: center;
-  margin-top: 20px;
-}
-table {
-  width: 100%;
-  margin-top: 20px;
-  border-collapse: collapse;
-}
-th {
-  background: #3b82f6;
-  color: white;
-}
-table, th, td {
-  border: 1px solid #e5e7eb;
-}
-th, td {
-  padding: 12px;
-  text-align: center;
-}
-a {
-  color: #ef4444;
-  font-size: 18px;
   text-decoration: none;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast),
+    background var(--transition-fast), opacity var(--transition-fast);
+}
+
+/* Primary button (add / main) */
+.full-btn {
+  width: 100%;
+  text-align: center;
+  background: linear-gradient(135deg, var(--primary), #7effbf);
+  color: #04100a;
+  box-shadow: 0 10px 25px rgba(46, 213, 115, 0.45);
+}
+
+.full-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 35px rgba(46, 213, 115, 0.65);
+}
+
+/* Delete button */
+.btn-delete {
+  background: linear-gradient(135deg, var(--danger), #ff9aa5);
+  color: #300006;
+  padding-inline: 0.75rem;
+  font-size: 0.8rem;
+  box-shadow: 0 8px 20px rgba(255, 71, 87, 0.4);
+}
+
+.btn-delete:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 13px 30px rgba(255, 71, 87, 0.6);
+}
+
+/* Subtle press effect on click */
+.btn:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: none;
+}
+
+/* ---------- SUMMARY CARD ---------- */
+.summary-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.total-amount {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-top: 0.3rem;
+  color: #fefefe;
+}
+
+/* subtle chip badges if needed */
+.summary-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 0.18rem 0.55rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* ---------- TABLE STYLING ---------- */
+.table-wrapper {
+  overflow-x: auto;
+  margin-top: 0.9rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* scrollbar styling */
+.table-wrapper::-webkit-scrollbar {
+  height: 6px;
+}
+.table-wrapper::-webkit-scrollbar-track {
+  background: #070a14;
+}
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: #2b3150;
+  border-radius: 999px;
+}
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #40466b;
+}
+
+.expense-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  background: radial-gradient(circle at top, #1a2040 0, #10152c 50%);
+}
+
+.expense-table thead {
+  background: linear-gradient(to right, #171d3a, #222a51);
+}
+
+.expense-table th,
+.expense-table td {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 0.6rem 0.45rem;
+  text-align: center;
+}
+
+/* table headers */
+.expense-table th {
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+/* striped rows */
+.expense-table tbody tr:nth-child(odd) {
+  background: rgba(12, 16, 36, 0.85);
+}
+.expense-table tbody tr:nth-child(even) {
+  background: rgba(12, 16, 36, 0.65);
+}
+
+/* hover row effect */
+.expense-table tbody tr:hover {
+  background: rgba(46, 213, 115, 0.08);
+}
+
+/* cell text tweaks */
+.expense-table td {
+  color: #e7e9ff;
+}
+
+/* column-specific styling */
+.expense-table td:nth-child(2) {
+  font-weight: 600;
+  color: #c6ffda;
+}
+.expense-table td:nth-child(3) {
+  color: #b7c2ff;
+}
+.expense-table td:nth-child(4) {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* make action column tighter */
+.expense-table td:last-child {
+  width: 80px;
+}
+
+/* No expenses text */
+.no-expenses {
+  margin-top: 0.7rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* ---------- FOOTER ---------- */
+.footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  text-align: center;
+  padding: 0.85rem 0 1.2rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  background: rgba(5, 8, 22, 0.95);
+}
+
+/* ---------- ANIMATIONS (FADE / SLIDE) ---------- */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animated appearance on load */
+.animate-in {
+  opacity: 0;
+  transform: translateY(18px);
+  animation: fadeUp 0.6s ease forwards;
+}
+
+/* small delay variations (can add these classes if you want staggered effects) */
+.delay-1 {
+  animation-delay: 0.1s;
+}
+.delay-2 {
+  animation-delay: 0.2s;
+}
+.delay-3 {
+  animation-delay: 0.3s;
+}
+.delay-4 {
+  animation-delay: 0.4s;
+}
+
+/* You can add these classes in HTML, example:
+   <section class="card form-card animate-in delay-1"> */
+
+/* ---------- CARD HOVER LIFT ---------- */
+.card-hover {
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal),
+    border-color var(--transition-normal);
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 22px 45px rgba(0, 0, 0, 0.7);
+  border-color: rgba(46, 213, 115, 0.6);
+}
+
+/* You can combine:
+   class="card card-hover" on summary and list cards */
+
+/* ---------- BADGE / PILL STYLES (OPTIONAL) ---------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.6rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.badge-primary {
+  background: var(--primary-soft);
+  color: #d9ffe9;
+  border-color: rgba(46, 213, 115, 0.5);
+}
+
+.badge-danger {
+  background: var(--danger-soft);
+  color: #ffe4e6;
+  border-color: rgba(255, 71, 87, 0.5);
+}
+
+/* ---------- HEADER SUBTLE UNDERLINE EFFECT ---------- */
+.header-line {
+  position: relative;
+  display: inline-block;
+}
+
+.header-line::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.2rem;
+  width: 40%;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--primary), transparent);
+}
+
+/* Example usage:
+   <h2 class="header-line">Total Spent</h2> */
+
+/* ---------- RESPONSIVE DESIGN ---------- */
+
+/* Tablets & small laptops */
+@media (max-width: 920px) {
+  .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .layout {
+    flex-direction: column;
+  }
+
+  .right-panel {
+    flex: 1 1 100%;
+  }
+
+  .expense-form {
+    grid-template-columns: 1fr;
+  }
+
+  #title,
+  #amount {
+    grid-column: 1 / -1;
+  }
+
+  .card {
+    padding: 1.25rem 1.2rem;
+  }
+
+  .total-amount {
+    font-size: 1.8rem;
+  }
+}
+
+/* Mobile phones */
+@media (max-width: 600px) {
+  .logo {
+    font-size: 1.25rem;
+  }
+
+  .tagline {
+    font-size: 0.75rem;
+  }
+
+  .main {
+    padding-top: 1.6rem;
+  }
+
+  .card h2 {
+    font-size: 1.05rem;
+  }
+
+  .expense-table {
+    font-size: 0.78rem;
+  }
+
+  .expense-table th,
+  .expense-table td {
+    padding: 0.45rem 0.35rem;
+  }
+
+  .btn {
+    font-size: 0.8rem;
+    padding: 0.55rem 0.8rem;
+  }
+
+  .total-amount {
+    font-size: 1.6rem;
+  }
+}
+
+/* Very small devices */
+@media (max-width: 400px) {
+  .header-content {
+    padding-top: 0.6rem;
+  }
+
+  .card {
+    border-radius: 12px;
+  }
+
+  .expense-table td:last-child {
+    width: 70px;
+  }
 }
